@@ -1,6 +1,5 @@
-# MarketInteligenceCrew Crew
-
-Welcome to the MarketInteligenceCrew Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
+# market-intelligence-crew
+**Market Intelligence Crew** is an AI-powered multi-agent system that automates market research and competitive analysis. A Research Agent gathers data, trends, and competitors, while an Analyst Agent generates structured reports with insights, SWOT analysis, and strategic recommendations for faster decision-making.
 
 ## Installation
 
@@ -52,3 +51,4 @@ For support, questions, or feedback regarding the MarketInteligenceCrew Crew or 
 - [Chat with our docs](https://chatg.pt/DWjSBZn)
 
 Let's create wonders together with the power and simplicity of crewAI.
+

@@ -1,0 +1,18 @@
+paths:
+  logs: "logs"
+  output: "output"
+  crewai_storage: ".crewai_storage"
+
+llm:
+  provider: "cerebras"          # cerebras | openai | ollama
+  model: "llama3.1-8b"
+  max_tokens: 1024
+  temperature: 0.3
+
+app:
+  app_name: "MarketIntelCrew"
+
+logging:
+  level_development: "DEBUG"
+  level_production: "INFO"
+  format: "pretty"              # pretty | json

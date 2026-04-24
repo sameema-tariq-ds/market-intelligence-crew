@@ -131,9 +131,7 @@ def run(app_config: AppSettings, inputs: Dict[str, Any]) -> None:
 def parse_args() -> Dict[str, Any]:
     """Parse CLI arguments for the crew runner."""
 
-    parser = argparse.ArgumentParser(
-        description="Run Market Intelligence Crew"
-    )
+    parser = argparse.ArgumentParser(description="Run Market Intelligence Crew")
 
     parser.add_argument(
         "--industry",
@@ -147,8 +145,6 @@ def parse_args() -> Dict[str, Any]:
     return {
         "industry": args.industry,
     }
-
-
 
     
 # CLI Entry Point
@@ -168,7 +164,6 @@ def main() -> None:
             format_type=getattr(app_config.logging, "format", "pretty"),
         )
 
-        logger = get_logger(__name__)
         logger.info("System initialized")
 
         # 3. Run app

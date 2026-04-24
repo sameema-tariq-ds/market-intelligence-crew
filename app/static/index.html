@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Intel • AI Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        .hero-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+
+        .card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .result-link {
+            transition: all 0.3s ease;
+        }
+
+        .result-link:hover {
+            background-color: #1e40af;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    <div class="min-h-screen hero-bg flex items-center justify-center p-6">
+        <div class="max-w-lg w-full">
+            
+            <!-- Header -->
+            <div class="text-center mb-10 text-white">
+                <div class="flex justify-center mb-4">
+                    <div class="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center">
+                        <i class="fa-solid fa-chart-line text-4xl text-white"></i>
+                    </div>
+                </div>
+                <h1 class="text-4xl font-bold tracking-tight">Market Intelligence</h1>
+                <p class="text-blue-100 mt-2 text-lg">AI-powered market research reports</p>
+            </div>
+
+            <!-- Main Card -->
+            <div class="bg-white rounded-3xl shadow-2xl card overflow-hidden">
+                <div class="px-8 pt-8 pb-6">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center gap-3">
+                        <i class="fa-solid fa-magnifying-glass text-blue-600"></i>
+                        Generate Report
+                    </h2>
+
+                    <form id="form" class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Industry or Market Segment
+                            </label>
+                            <input 
+                                type="text" 
+                                name="industry" 
+                                id="industry"
+                                required
+                                placeholder="e.g., Electric Vehicles, SaaS CRM, Renewable Energy"
+                                class="w-full px-5 py-4 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700 placeholder-gray-400 transition-all"
+                            />
+                        </div>
+
+                        <button 
+                            type="submit"
+                            id="generateBtn"
+                            class="w-full bg-blue-600 hover:bg-blue-700 transition-all text-white font-semibold py-4 px-6 rounded-2xl flex items-center justify-center gap-3 text-lg shadow-lg shadow-blue-500/30 active:scale-[0.985]">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            Generate Market Intelligence Report
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Result Area -->
+                <div id="result" class="hidden px-8 py-6 bg-gray-50 border-t border-gray-100">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fa-solid fa-check-circle text-green-500 text-2xl"></i>
+                        <h3 class="font-semibold text-gray-800">Your report is ready!</h3>
+                    </div>
+                    
+                    <a id="downloadLink" 
+                       href="#" 
+                       target="_blank"
+                       class="result-link flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-700 text-white font-medium py-4 px-6 rounded-2xl text-center transition-all">
+                        <i class="fa-solid fa-download"></i>
+                        <span>Download Markdown Report</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Footer Note -->
+            <p class="text-center text-blue-100/70 text-sm mt-8">
+                Powered by AI • Instant market insights
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById("form");
+        const resultDiv = document.getElementById("result");
+        const downloadLink = document.getElementById("downloadLink");
+        const generateBtn = document.getElementById("generateBtn");
+
+        form.addEventListener("submit", async function(e) {
+            e.preventDefault();
+            
+            // Show loading state
+            const originalBtnText = generateBtn.innerHTML;
+            generateBtn.innerHTML = `
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                Generating Report...
+            `;
+            generateBtn.disabled = true;
+
+            const formData = new FormData(this);
+            
+            try {
+                const response = await fetch("/generate", {
+                    method: "POST",
+                    body: formData
+                });
+
+                if (!response.ok) throw new Error("Failed to generate report");
+
+                const data = await response.json();
+                
+                // Show result
+                downloadLink.href = data.download_url;
+                resultDiv.classList.remove("hidden");
+                
+                // Smooth scroll to result
+                resultDiv.scrollIntoView({ behavior: "smooth" });
+
+            } catch (error) {
+                alert("Something went wrong while generating the report. Please try again.");
+                console.error(error);
+            } finally {
+                // Reset button
+                generateBtn.innerHTML = originalBtnText;
+                generateBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

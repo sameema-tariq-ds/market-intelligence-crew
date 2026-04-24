@@ -1,0 +1,31 @@
+market_research_task:
+  description: >
+    Conduct comprehensive market research on the '{industry}' industry.
+    Your research MUST cover:
+      1. Market overview: size, growth rate, key segments, geography
+      2. Key trends shaping the market in 2023-2024
+      3. Target audience: who effectively utilize this industry
+      3. List your data sources
+
+    RULES:
+    - Use tools only if necessary (max 1–2 calls)
+    - Do NOT ask for more tools or suggest tool usage
+    - Do NOT hallucinate missing data
+    - If information is missing, explicitly say "Not available"
+    - Do NOT fabricate numbers or sources
+    - Keep output factual and structured
+    - DO NOT explain your reasoning
+
+    OUTPUT FORMAT RULE:
+    You MUST return ONLY valid Markdown.
+
+  expected_output: >
+    A detailed market research report in structured markdown format containing:
+      - Market Overview (2-3 paragraphs)
+      - Key Trends (5+ bullet points)
+      - Target Audience description
+      - Data Sources list
+    The report must be thorough enough for a strategy analyst to build on. 
+  agent: "market_researcher"
+  output_file: "output/market_research_{industry}.md"
+  markdown: true

@@ -7,13 +7,13 @@ Development: Human-readable colored output
 Production:  JSON lines — easy to parse with tools like jq or ship to Datadog
 """
 
+from __future__ import annotations
+
 import logging
 import json
-import os
 from pathlib import Path
 from datetime import datetime
-
-from src.market_inteligence_crew.utils.config_loader import cfg
+from typing import Optional
 
 
 class JsonFormatter(logging.Formatter):
@@ -52,50 +52,60 @@ class PrettyFormatter(logging.Formatter):
         )
 
 
-def _setup_logging() -> None:
-    """Configure logging based on environment."""
-    log_dir = Path(cfg.paths.logs)
-    log_dir.mkdir(parents=True, exist_ok=True)
+def setup_logging(
+        *,
+        env: str = "development",
+        log_level: str = "INFO",
+        log_dir: Optional[str] = None,
+        format_type: str = "pretty",
+    ) -> None:
+    """
+    Initialize structured logging system.
 
-    is_dev   = cfg.app_env == "development"
-    level    = getattr(logging, cfg.logging.level, logging.INFO)
-    fmt_type = str(getattr(cfg.logging, "format", "pretty")).lower()
+    Args:
+        env: application environment (development/production)
+        log_level: logging level string
+        log_dir: directory for file logs
+        format_type: "pretty" or "json"
+    """
 
-    # Console handler
+    # Convert level safely
+    level = getattr(logging, log_level.upper(), logging.INFO)
+
+    # Root logger
+    root = logging.getLogger()
+    root.setLevel(logging.DEBUG)
+    root.handlers.clear()
+
+    # ── Console Handler ─────────────────────
     console = logging.StreamHandler()
     console.setLevel(level)
-    if fmt_type == "json":
+
+    if format_type == "json" or env == "production":
         console.setFormatter(JsonFormatter())
     else:
-        console.setFormatter(PrettyFormatter() if is_dev else JsonFormatter())
+        console.setFormatter(PrettyFormatter())
 
-    # File handler (always JSON for parsing)
-    log_file = log_dir / f"app_{datetime.now().strftime('%Y%m%d')}.log"
-    file_handler = logging.FileHandler(log_file, encoding="utf-8")
-    file_handler.setLevel(logging.DEBUG)
-    file_handler.setFormatter(JsonFormatter())
-
-    # Root logger configuration
-    root = logging.getLogger()
-    root.setLevel(logging.DEBUG)   # Let handlers filter by their own level
-    root.handlers.clear()
     root.addHandler(console)
-    root.addHandler(file_handler)
 
-    # Silence noisy third-party loggers
-    for noisy_lib in ["httpx", "urllib3", "chromadb", "sentence_transformers"]:
-        logging.getLogger(noisy_lib).setLevel(logging.WARNING)
+    # ── File Handler (optional) ─────────────
+    if log_dir:
+        Path(log_dir).mkdir(parents=True, exist_ok=True)
+
+        log_file = Path(log_dir) / f"app_{datetime.now().strftime('%Y%m%d')}.log"
+
+        file_handler = logging.FileHandler(log_file, encoding="utf-8")
+        file_handler.setLevel(logging.DEBUG)
+        file_handler.setFormatter(JsonFormatter())
+
+        root.addHandler(file_handler)
+
+    # ── Silence noisy libraries ─────────────
+    for noisy in ["httpx", "urllib3", "chromadb", "sentence_transformers"]:
+        logging.getLogger(noisy).setLevel(logging.WARNING)
 
 
-# Run setup once on import
-_setup_logging()
-
-
+# Logger Factory
 def get_logger(name: str) -> logging.Logger:
-    """
-    Get a named logger. Usage:
-        from src.utils.logger import get_logger
-        logger = get_logger(__name__)
-        logger.info("Hello!")
-    """
+    """Return named logger."""
     return logging.getLogger(name)

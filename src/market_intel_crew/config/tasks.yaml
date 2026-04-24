@@ -2,7 +2,7 @@ market_research_task:
   description: >
     Conduct comprehensive market research on the '{industry}' industry.
     Your research MUST cover:
-      1. Market overview: size, growth rate, key segments, geography
+      1. Market overview: size, growth rate, key segments, geography -> (if available)
       2. Key trends shaping the market in 2023-2024
       3. Target audience: who effectively utilize this industry
       3. List your data sources
@@ -28,4 +28,50 @@ market_research_task:
     The report must be thorough enough for a strategy analyst to build on. 
   agent: "market_researcher"
   output_file: "output/market_research_{industry}.md"
+  markdown: true
+
+
+market_analyst_task:
+  description: >
+    Using the market research provided from previous task, produce a comprehensive competitive intelligence report for the '{industry}' industry.
+    Your analysis MUST include:
+      1. Executive Summary (readable in 60 seconds)
+      2. Market size estimate with growth projection
+      3. SWOT Analysis for EACH competitor identified in the research:
+        - Strengths (2-3 points)
+        - Weaknesses (2-3 points)
+        - Opportunities (1-2 points)
+        - Threats (1-2 points)
+      4. Pricing model for each competitor (use the Pricing Intelligence tool for at least 2 competitors)
+      5. Threat level assessment per competitor: LOW / MEDIUM / HIGH
+      6. Market Gaps: underserved niches or unmet customer needs
+      7. Strategic Recommendations: 5+ actionable items for a new entrant
+      8. Risk Factors: what could go wrong
+      9. Conclusion paragraph
+    Write for a sophisticated business audience. Be direct and opinionated.
+
+    RULES:
+    - Use tools only if necessary (max 1–2 calls)
+    - Do NOT ask for more tools or suggest tool usage
+    - Do NOT hallucinate missing data
+    - If information is missing, explicitly say "Not available"
+    - Do NOT fabricate numbers or sources
+    - Keep output factual and structured
+    - DO NOT explain your reasoning
+
+    OUTPUT FORMAT RULE:
+    You MUST return ONLY valid Markdown.
+
+  expected_output: >
+    A polished competitive intelligence report in Markdown format with:
+      - # Executive Summary
+      - ## Market Overview
+      - ## Competitor Analyses (one section per competitor with SWOT table)
+      - ## Market Gaps & Opportunities
+      - ## Strategic Recommendations
+      - ## Risk Factors
+      - ## Conclusion
+    The report should be professional enough to present to a VC or board. 
+  agent: "market_researcher"
+  output_file: "output/market_analyst_{industry}.md"
   markdown: true

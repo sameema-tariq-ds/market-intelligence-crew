@@ -1,3 +1,8 @@
+app_env: "development"
+
+app:
+  app_name: "MarketIntelCrew"
+
 paths:
   logs: "logs"
   output: "output"
@@ -6,11 +11,11 @@ paths:
 llm:
   provider: "cerebras"          # cerebras | openai | ollama
   model: "llama3.1-8b"
-  max_tokens: 1024
+  max_tokens: 2048
   temperature: 0.3
 
-app:
-  app_name: "MarketIntelCrew"
+agents:
+  research_max_iter: 2
 
 logging:
   level_development: "DEBUG"

@@ -2,6 +2,10 @@
 steps_to_follow
 venv311/
 steps_readme
+.crewai_storage/
+_localappdata/
+logs/
+output/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -1,7 +1,7 @@
 [project]
-name = "market_inteligence_crew"
+name = "market_intelligence_crew"
 version = "0.1.0"
-description = "market_inteligence_crew using crewAI"
+description = "market_intelligence_crew using crewAI"
 authors = [{ name = "Sameema Tariq", email = "sameema.tariq.ds@example.com" }]
 requires-python = ">=3.10,<3.14"
 dependencies = [
@@ -9,16 +9,19 @@ dependencies = [
     "langchain-cerebras>=0.1.0",
     "langchain>=0.2.0",
     "pyyaml>=6.0.1",
-    "python-dotenv>=1.0.1"
+    "python-dotenv>=1.0.1",
+    "fastapi",
+    "uvicorn[standard]",
+    "requests",
 ]
 
 [project.scripts]
-market_inteligence_crew = "market_inteligence_crew.main:run"
-run_crew = "market_inteligence_crew.main:run"
-train = "market_inteligence_crew.main:train"
-replay = "market_inteligence_crew.main:replay"
-test = "market_inteligence_crew.main:test"
-run_with_trigger = "market_inteligence_crew.main:run_with_trigger"
+market_inteligence_crew = "market_intel_crew.main:run"
+run_crew = "market_intel_crew.main:run"
+train = "market_intel.main:train"
+replay = "market_intel.main:replay"
+test = "market_intel.main:test"
+run_with_trigger = "market_intel.main:run_with_trigger"
 
 [build-system]
 requires = ["hatchling"]
@@ -26,3 +29,6 @@ build-backend = "hatchling.build"
 
 [tool.crewai]
 type = "crew"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/market_intel_crew"]

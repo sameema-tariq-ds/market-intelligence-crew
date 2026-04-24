@@ -100,8 +100,6 @@ def validate_crew_config(config: Dict[str, Any], crew_type: CrewComponentType) -
     """
     errors: List[ValidationErrorDetail] = []
 
-    print(config)
-
     if not isinstance(config, dict):
         raise ConfigValidationError([
             ValidationErrorDetail("config", "Must be a dictionary")
